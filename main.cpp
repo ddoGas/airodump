@@ -58,12 +58,11 @@ void airodump(const u_char* pkt){
             struct beacon_info new_beacon;
             memcpy(new_beacon.bssid, beacon_fr->filter, 6);
             new_beacon.beacons = 1;
-            memcpy(new_beacon.essid, essid_seg+2, (int)(*(uint8_t*)essid_seg+1)); 
+            memcpy(new_beacon.essid, essid_seg+2, *(uint8_t*)(essid_seg+1)); 
             beacons.push_back(new_beacon);
         }
     }
     else if(((beacon_fr->control&0xff)==0x40)||((beacon_fr->control&0xff)==0x48)){
-        char* essid_seg = frame_body;
         bool done=false;
         for (std::list<struct station_info>::iterator it = stations.begin(); it != stations.end(); ++it){
             if(!memcmp(it->station, beacon_fr->send, 6)){
