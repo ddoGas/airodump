@@ -11,16 +11,20 @@ char iface[80];
 std::list<struct beacon_info> beacons;
 std::list<struct probe_info> probes;
 
-bool check_dot11(const u_char* pkt){
-    return true;
-}
-
-void update_dot11(const u_char* pkt){
-    int a=3;
-}
-
 void print_dot11(){
+    system("clear");
     printf("good\n");
+}
+
+void airodump(const u_char* pkt){
+    struct ieee80211_radiotap_header* radiotap_hdr = (struct ieee80211_radiotap_header*)packet;
+    if(radiotap_hdr->it_version!=0x00)
+        return;
+
+	struct dot11_frame_header* dot11_fr = (strcut dot11_frame_header*)(packet+radiotap_hdr->it_len);
+
+    print_dot11();
+    return;
 }
 
 void usage() {
@@ -55,10 +59,6 @@ int main(int argc, char* argv[]) {
             break;
         }
 
-        if(check_dot11(pkt_data)){
-            system("clear");
-            update_dot11(pkt_data);
-            print_dot11();
-        }
+        airodump(pkt_data);
     }
 }

@@ -7,12 +7,12 @@ struct ieee80211_radiotap_header{
     u_int32_t       it_present;     /* fields present */
 } __attribute__((__packed__));
 
-struct dot11_frame{
+struct dot11_frame_header{
 	uint16_t		control;
 	#if (CID_ON)
         uint16_t    connect_id;
     #else
-        uint8_t     duration;
+        uint16_t     duration;
     #endif
     uint8_t         recv[6];
     uint8_t         send[6];
