@@ -9,27 +9,37 @@
 
 char iface[80];
 std::list<struct beacon_info> beacons;
-std::list<struct probe_info> probes;
+std::list<struct station_info> stations;
 
-void print_mac(){
+void print_mac(char* mac_ptr){
+    printf("%02x:%02x:%02x:%02x:%02x:%02x\t", mac_ptr[0], mac_ptr[1], mac_ptr[2], mac_ptr[3], mac_ptr[4], mac_ptr[5])
     return;
 }
 
 void print_dot11(){
-    system("clear");
-    printf("good\n");
+    printf("\n\n\n----------------------------------------\n");
+    printf("BSSID       beacons         ESSID\n");
+    for (std::list<struct beacon_info>::iterator it = beacons.begin(); it != beacons.end(); ++it){
+        print_mac(it->bssid);
+        printf("%d\t%s", it->beacons, it->essid);
+        printf("\n");
+    }
+    printf("\n----------------------------------------\n");
 }
 
 void airodump(const u_char* pkt){
     struct ieee80211_radiotap_header* radiotap_hdr = (struct ieee80211_radiotap_header*)pkt;
-    if(radiotap_hdr->it_version!=0x00)
-        return;
+    // if(radiotap_hdr->it_version!=0x00)
+    //     return;
 
 	struct dot11_frame_header* beacon_fr = (struct dot11_frame_header*)(pkt+radiotap_hdr->it_len);
+    char* frame_body = (char*)(dot11_frame_header+sizeof(struct dot11_frame_header));
 
-    if((beacon_fr->control&0xff)==0x80){
+    // if((beacon_fr->control&0xff)==0x80){
+    if(true){
+        char* essid_seg = frame_body+12;
         bool done=false;
-        for (std::list<struct beacon_infot>::iterator it = beacons.begin(); it != beacons.end(); ++it){
+        for (std::list<struct beacon_info>::iterator it = beacons.begin(); it != beacons.end(); ++it){
             if(!memcmp(it->bssid, beacon_fr->filter, 6)){
                 it->beacons++;
                 done = true;
@@ -38,24 +48,33 @@ void airodump(const u_char* pkt){
         }
         if(done==false){
             struct beacon_info new_beacon;
-            new_beacon.
+            memcpy(new_beacon.bssid, beacon_fr->filter, 6);
+            new_beacon.beacons = 1;
+            memcpy(new_beacon.essid, essid_seg+2, (int)(*(uint8_t*)essid_seg+1)); 
             beacons.push_back(new_beacon);
         }
     }
-
     else if(((beacon_fr->control&0xff)==0x40)||((beacon_fr->control&0xff)==0x48)){
+        char* essid_seg = frame_body;
         bool done=false;
-        for(){
-            if(){
+        for (std::list<struct station_info>::iterator it = stations.begin(); it != stations.end(); ++it){
+            if(!memcmp(it->station, beacon_fr->send, 6)){
+                it->frames++;
                 done = true;
                 break;
             }
         }
         if(done==false){
-            
+            struct station_info new_station;
+            memcpy(new_station.station, beacon_fr->send, 6);
+            new_stations.frames = 1;
+            if((beacon_fr->control&0xff)==0x40)
+                memcpy(new_station.bssid, beacon_fr->recv);
+            else
+                memset(new_station.bssid, 0, 6);
+            stations.push_back(new_station);
         }
     }
-
     else
         return;
 
