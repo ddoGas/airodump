@@ -1,5 +1,7 @@
 #include <unistd.h>
 
+#define DOT_HDR_SIZE 24
+
 struct ieee80211_radiotap_header{
     u_int8_t        it_version;     /* set to 0 */
     u_int8_t        it_pad;
