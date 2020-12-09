@@ -36,14 +36,13 @@ void print_dot11(){
 
 void airodump(const u_char* pkt){
     struct ieee80211_radiotap_header* radiotap_hdr = (struct ieee80211_radiotap_header*)pkt;
-    // if(radiotap_hdr->it_version!=0x00)
-    //     return;
+    if(radiotap_hdr->it_version!=0x00)
+        return;
 
 	struct dot11_frame_header* beacon_fr = (struct dot11_frame_header*)(pkt+radiotap_hdr->it_len);
     char* frame_body = (char*)(beacon_fr+DOT_HDR_SIZE);
 
-    // if((beacon_fr->control&0xff)==0x80){
-    if(true){
+    if((beacon_fr->control&0xff)==0x80){
         char* essid_seg = frame_body+12;
         bool done=false;
         for (std::list<struct beacon_info>::iterator it = beacons.begin(); it != beacons.end(); ++it){
