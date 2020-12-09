@@ -1,6 +1,15 @@
 #include <cstdio>
+#include <stdlib.h>
+#include <dot11frame.h>
 
 char iface[80];
+
+map<std::string, apInfo> apMap;
+map<std::string, staInfo> staMap;
+
+bool dot11_check(const u_char* pkt){
+
+}
 
 void usage() {
 	printf("syntax : airodump <interface>\n");
@@ -23,5 +32,21 @@ int main(int argc, char* argv[]) {
 		return false;
 	}
 
-    
+    struct pcap_pkthdr *pkt_header;
+    const u_char *pkt_data;
+    while(true){
+        int res = pcap_next_ex(handle, &pkt_header, &pkt_data);
+
+        if (res == 0) continue;
+        if (res == -1 || res == -2) {
+            printf("pcap_next_ex return %d(%s)\n", res, pcap_geterr(handle));
+            break;
+        }
+
+        if(check_dot11(pkt_data)){
+            system("clear");
+            update(pkt_data);
+            print_dot11();
+        }
+    }
 }
