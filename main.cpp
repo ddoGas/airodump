@@ -81,7 +81,7 @@ void airodump(const u_char* pkt){
     print_dot11();
     return;
 }
-~
+
 void usage() {
 	printf("syntax : airodump <interface>\n");
     printf("sample : airodump mon0\n");
