@@ -11,22 +11,58 @@ char iface[80];
 std::list<struct beacon_info> beacons;
 std::list<struct probe_info> probes;
 
+void print_mac(){
+    return;
+}
+
 void print_dot11(){
     system("clear");
     printf("good\n");
 }
 
 void airodump(const u_char* pkt){
-    struct ieee80211_radiotap_header* radiotap_hdr = (struct ieee80211_radiotap_header*)pktt;
+    struct ieee80211_radiotap_header* radiotap_hdr = (struct ieee80211_radiotap_header*)pkt;
     if(radiotap_hdr->it_version!=0x00)
         return;
 
-	struct dot11_frame_header* dot11_fr = (struct dot11_frame_header*)(pktt+radiotap_hdr->it_len);
+	struct dot11_frame_header* beacon_fr = (struct dot11_frame_header*)(pkt+radiotap_hdr->it_len);
+
+    if((beacon_fr->control&0xff)==0x80){
+        bool done=false;
+        for (std::list<struct beacon_infot>::iterator it = beacons.begin(); it != beacons.end(); ++it){
+            if(!memcmp(it->bssid, beacon_fr->filter, 6)){
+                it->beacons++;
+                done = true;
+                break;
+            }
+        }
+        if(done==false){
+            struct beacon_info new_beacon;
+            new_beacon.
+            beacons.push_back(new_beacon);
+        }
+    }
+
+    else if(((beacon_fr->control&0xff)==0x40)||((beacon_fr->control&0xff)==0x48)){
+        bool done=false;
+        for(){
+            if(){
+                done = true;
+                break;
+            }
+        }
+        if(done==false){
+            
+        }
+    }
+
+    else
+        return;
 
     print_dot11();
     return;
 }
-
+~
 void usage() {
 	printf("syntax : airodump <interface>\n");
     printf("sample : airodump mon0\n");
