@@ -17,11 +17,11 @@ void print_dot11(){
 }
 
 void airodump(const u_char* pkt){
-    struct ieee80211_radiotap_header* radiotap_hdr = (struct ieee80211_radiotap_header*)packet;
+    struct ieee80211_radiotap_header* radiotap_hdr = (struct ieee80211_radiotap_header*)pktt;
     if(radiotap_hdr->it_version!=0x00)
         return;
 
-	struct dot11_frame_header* dot11_fr = (strcut dot11_frame_header*)(packet+radiotap_hdr->it_len);
+	struct dot11_frame_header* dot11_fr = (struct dot11_frame_header*)(pktt+radiotap_hdr->it_len);
 
     print_dot11();
     return;
