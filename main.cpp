@@ -25,7 +25,7 @@ void print_dot11(){
         printf("\n");
     }
     printf("BSSID\t\t\tstation\t\t\tframes\n");
-    for (std::list<struct station_info>::iterator it = stationss.begin(); it != stations.end(); ++it){
+    for (std::list<struct station_info>::iterator it = stations.begin(); it != stations.end(); ++it){
         print_mac(it->bssid);
         print_mac(it->station);
         printf("%d", it->frames);
