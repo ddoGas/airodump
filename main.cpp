@@ -11,8 +11,8 @@ char iface[80];
 std::list<struct beacon_info> beacons;
 std::list<struct station_info> stations;
 
-void print_mac(char* mac_ptr){
-    printf("%02x:%02x:%02x:%02x:%02x:%02x\t", mac_ptr[0], mac_ptr[1], mac_ptr[2], mac_ptr[3], mac_ptr[4], mac_ptr[5])
+void print_mac(uint8_t* mac_ptr){
+    printf("%02x:%02x:%02x:%02x:%02x:%02x\t", mac_ptr[0], mac_ptr[1], mac_ptr[2], mac_ptr[3], mac_ptr[4], mac_ptr[5]);
     return;
 }
 
@@ -67,9 +67,9 @@ void airodump(const u_char* pkt){
         if(done==false){
             struct station_info new_station;
             memcpy(new_station.station, beacon_fr->send, 6);
-            new_stations.frames = 1;
+            new_station.frames = 1;
             if((beacon_fr->control&0xff)==0x40)
-                memcpy(new_station.bssid, beacon_fr->recv);
+                memcpy(new_station.bssid, beacon_fr->recv, 6);
             else
                 memset(new_station.bssid, 0, 6);
             stations.push_back(new_station);
