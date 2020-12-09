@@ -1,14 +1,23 @@
 #include <cstdio>
 #include <stdlib.h>
-#include <dot11frame.h>
+
+#include "dot11frame.h"
+#include "airodump.h"
 
 char iface[80];
+std::list<struct beacon_info> beacons;
+std::list<struct probe_info> probes;
 
-map<std::string, apInfo> apMap;
-map<std::string, staInfo> staMap;
+bool check_dot11(const u_char* pkt){
+    return true;
+}
 
-bool dot11_check(const u_char* pkt){
+void update_dot11(const u_char* pkt){
+    int a=3;
+}
 
+void print_dot11(){
+    printf("good\n");
 }
 
 void usage() {
@@ -45,7 +54,7 @@ int main(int argc, char* argv[]) {
 
         if(check_dot11(pkt_data)){
             system("clear");
-            update(pkt_data);
+            update_dot11(pkt_data);
             print_dot11();
         }
     }
