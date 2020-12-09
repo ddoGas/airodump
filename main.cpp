@@ -18,10 +18,17 @@ void print_mac(uint8_t* mac_ptr){
 
 void print_dot11(){
     printf("\n\n\n----------------------------------------\n");
-    printf("BSSID       beacons         ESSID\n");
+    printf("BSSID\t\t\tbeacons\t\t\tESSID\n");
     for (std::list<struct beacon_info>::iterator it = beacons.begin(); it != beacons.end(); ++it){
         print_mac(it->bssid);
         printf("%d\t%s", it->beacons, it->essid);
+        printf("\n");
+    }
+    printf("BSSID\t\t\tstation\t\t\tframes\n");
+    for (std::list<struct beacon_info>::iterator it = beacons.begin(); it != beacons.end(); ++it){
+        print_mac(it->bssid);
+        print_mac(it->station);
+        printf("%d", it->frames);
         printf("\n");
     }
     printf("\n----------------------------------------\n");
