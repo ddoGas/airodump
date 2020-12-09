@@ -1,5 +1,7 @@
 #include <cstdio>
 #include <stdlib.h>
+#include <pcap.h>
+#include <string.h>
 
 #include "dot11frame.h"
 #include "airodump.h"
