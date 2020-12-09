@@ -58,11 +58,7 @@ void airodump(const u_char* pkt){
             struct beacon_info new_beacon;
             memcpy(new_beacon.bssid, beacon_fr->filter, 6);
             new_beacon.beacons = 1;
-            for(int i=0;i<10;i++){
-                printf("%c\n", essid_seg[i]);
-            }
-            exit(0);
-            memcpy(new_beacon.essid, essid_seg+2, 10); 
+            memcpy(new_beacon.essid, essid_seg+2, (int)(*(uint8_t*)essid_seg+1)); 
             beacons.push_back(new_beacon);
         }
     }
