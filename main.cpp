@@ -33,7 +33,7 @@ void airodump(const u_char* pkt){
     //     return;
 
 	struct dot11_frame_header* beacon_fr = (struct dot11_frame_header*)(pkt+radiotap_hdr->it_len);
-    char* frame_body = (char*)(dot11_frame_header+DOT_HDR_SIZE);
+    char* frame_body = (char*)(beacon_fr+DOT_HDR_SIZE);
 
     // if((beacon_fr->control&0xff)==0x80){
     if(true){
