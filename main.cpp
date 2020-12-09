@@ -22,7 +22,7 @@ void print_dot11(){
     printf("BSSID\t\t\tbeacons\t\t\tESSID\n");
     for (std::list<struct beacon_info>::iterator it = beacons.begin(); it != beacons.end(); ++it){
         print_mac(it->bssid);
-        printf("%d\t\t%s", it->beacons, it->essid);
+        printf("%d\t\t\t%s", it->beacons, it->essid);
         printf("\n");
     }
     printf("\n\n");

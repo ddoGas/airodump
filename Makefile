@@ -7,3 +7,4 @@ airodump: main.o
 
 clean:
 	rm -f airodump *.o
+	
