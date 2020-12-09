@@ -17,6 +17,7 @@ void print_mac(uint8_t* mac_ptr){
 }
 
 void print_dot11(){
+    system("clear");
     printf("\n\n\n----------------------------------------\n");
     printf("BSSID\t\t\tbeacons\t\t\tESSID\n");
     for (std::list<struct beacon_info>::iterator it = beacons.begin(); it != beacons.end(); ++it){
@@ -24,6 +25,7 @@ void print_dot11(){
         printf("%d\t%s", it->beacons, it->essid);
         printf("\n");
     }
+    printf("\n\n");
     printf("BSSID\t\t\tstation\t\t\tframes\n");
     for (std::list<struct station_info>::iterator it = stations.begin(); it != stations.end(); ++it){
         print_mac(it->bssid);
@@ -74,7 +76,7 @@ void airodump(const u_char* pkt){
             struct station_info new_station;
             memcpy(new_station.station, beacon_fr->send, 6);
             new_station.frames = 1;
-            if((beacon_fr->control&0xff)==0x40)
+            if((beacon_fr->control&0xff)==0x48)
                 memcpy(new_station.bssid, beacon_fr->recv, 6);
             else
                 memset(new_station.bssid, 0, 6);
