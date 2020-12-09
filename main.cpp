@@ -22,8 +22,7 @@ void print_dot11(){
     printf("BSSID\t\t\tbeacons\t\t\tESSID\n");
     for (std::list<struct beacon_info>::iterator it = beacons.begin(); it != beacons.end(); ++it){
         print_mac(it->bssid);
-        strcpy(it->essid, "goodbad");
-        printf("%d\t%s", it->beacons, it->essid);
+        printf("%d\t\t%s", it->beacons, it->essid);
         printf("\n");
     }
     printf("\n\n");
@@ -59,6 +58,10 @@ void airodump(const u_char* pkt){
             struct beacon_info new_beacon;
             memcpy(new_beacon.bssid, beacon_fr->filter, 6);
             new_beacon.beacons = 1;
+            for(int i=0;i<10;i++){
+                printf("%c\n", essid_seg[i]);
+            }
+            exit(0);
             memcpy(new_beacon.essid, essid_seg+2, 10); 
             beacons.push_back(new_beacon);
         }
